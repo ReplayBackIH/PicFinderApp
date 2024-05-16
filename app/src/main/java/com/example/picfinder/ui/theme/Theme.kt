@@ -109,7 +109,7 @@ fun PicFinderTheme(
         else -> lightScheme
     }
 
-    //Add status bar color from chosen color theme
+    // Add status bar color from chosen color theme
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
