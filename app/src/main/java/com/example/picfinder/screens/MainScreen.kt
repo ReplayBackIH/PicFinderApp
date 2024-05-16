@@ -2,10 +2,14 @@ package com.example.picfinder.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -22,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.picfinder.R
 import com.example.picfinder.ui.theme.PicFinderTypography
@@ -36,12 +41,11 @@ fun MainScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.End
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextField(modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp),
-            singleLine = true,
             value = textFieldText.value,
             onValueChange = { userInput ->
                 textFieldText.value = userInput
@@ -55,6 +59,7 @@ fun MainScreen(navController: NavController) {
                     contentDescription = "search_icon"
                 )
             },
+            singleLine = true,
             keyboardActions = KeyboardActions(
                 onNext = {
                     /*TODO*/
@@ -63,12 +68,12 @@ fun MainScreen(navController: NavController) {
         )
         Spacer(
             modifier = Modifier
-                .padding(15.dp)
+                .padding(16.dp)
         )
-        Column(
-            modifier = Modifier,
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Center
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
         ) {
             Button(modifier = Modifier
                 .padding(end = 18.dp),
@@ -80,6 +85,46 @@ fun MainScreen(navController: NavController) {
                 )
             }
         }
-    }
+        Spacer(
+            modifier = Modifier
+                .padding(16.dp)
+        )
 
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            itemsIndexed(
+                listOf(
+                    //temp
+                    "dawdaw",
+                    "agtereh",
+                    "waw4g",
+                    "gergW",
+                    "FERGT",
+                    "dawdaw",
+                    "agtereh",
+                    "waw4g",
+                    "gergW",
+                    "FERGT",
+                    "dawdaw",
+                    "agtereh",
+                    "waw4g",
+                    "gergW",
+                    "FERGT",
+                    "dawdaw",
+                    "agtereh",
+                    "waw4g",
+                    "gergW",
+                    "FERGT",
+                )
+            ) { _, item ->
+                Text(
+                    text = "Item $item",
+                    modifier = Modifier.padding(10.dp),
+                    fontSize = 25.sp
+                )
+            }
+        }
+    }
 }

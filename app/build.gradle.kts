@@ -55,6 +55,10 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
     //Extended icons
     implementation("androidx.compose.material:material-icons-extended:1.6.7")
+    //Retrofit2 for Api calls
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    //Converter
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
