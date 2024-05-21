@@ -1,4 +1,4 @@
-package com.example.picfinder.screens
+package com.example.picfinder.view.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.picfinder.view.navigation.ScreenRoutes
 
 @Composable
 fun DetailedImageScreen(navController: NavController) {
