@@ -11,7 +11,7 @@ class ImageRepository(private val apiService: ApiService) {
                 apiKey = apiKey,
                 userRequest = userRequest
             )
-            response.listOfImages
+            response.listOfImages ?: emptyList()
         } catch (e: Exception) {
             emptyList()
         }

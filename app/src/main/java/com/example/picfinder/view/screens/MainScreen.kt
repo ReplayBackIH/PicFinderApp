@@ -1,15 +1,19 @@
 package com.example.picfinder.view.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -70,7 +74,12 @@ fun ImageSearchScreen(navController: NavController, imageViewModel: ImageViewMod
 
 @Composable
 fun ImageItem(image: Image) {
-    Row(modifier = Modifier.padding(6.dp)) {
+    Row(
+        modifier = Modifier
+            .padding(6.dp)
+            .fillMaxWidth()
+    ) {
+
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(image.imageThumbnail)
@@ -79,14 +88,18 @@ fun ImageItem(image: Image) {
             contentDescription = "image_thumbnail",
             placeholder = painterResource(id = R.drawable.image_icon),
             contentScale = ContentScale.Crop,
-            modifier = Modifier.clip(CircleShape)
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(64.dp)
         )
-        Column(
-            modifier = Modifier.padding(6.dp)
-        ) {
-            Text(text = image.userName)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = image.imageTags)
+        Spacer(modifier = Modifier.width(8.dp))
+        Column (modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f)
+        ){
+            Text(text = image.userName, style = MaterialTheme.typography.bodyMedium)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = image.imageTags, style = MaterialTheme.typography.bodySmall)
         }
     }
 }
@@ -95,11 +108,11 @@ fun ImageItem(image: Image) {
 fun ImageList(imageViewModel: ImageViewModel) {
 
     val imageList by imageViewModel.imageList.collectAsState()
-    
+
     LazyColumn {
-        itemsIndexed(imageList){ _, image ->  
+        itemsIndexed(imageList) { _, image ->
             ImageItem(image = image)
         }
     }
- 
+
 }
