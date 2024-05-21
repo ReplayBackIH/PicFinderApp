@@ -55,10 +55,16 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
     //Extended icons
     implementation("androidx.compose.material:material-icons-extended:1.6.7")
-    //Retrofit2 for Api calls
+    //Retrofit2 for Api calls and converter
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    //Converter
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    //ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
+    //Kotlin Coroutines. (For Coroutines and stateFlow)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
