@@ -3,7 +3,7 @@ package com.example.picfinder.model.data
 import com.google.gson.annotations.SerializedName
 
 data class Image(
-    @SerializedName("imageURL") val imageThumbnail : String,
+    @SerializedName("previewURL") val imageThumbnail : String,
     @SerializedName("user") val userName : String,
     @SerializedName("tags") val  imageTags: String,
     @SerializedName("largeImageURL") val largeImage: String,

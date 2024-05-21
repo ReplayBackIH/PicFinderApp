@@ -1,5 +1,7 @@
 package com.example.picfinder.model.data
 
+import com.google.gson.annotations.SerializedName
+
 data class Images(
-    val listOfImages : List<Image>
+    @SerializedName("hits") val listOfImages : List<Image>
 )
