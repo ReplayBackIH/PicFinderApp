@@ -13,6 +13,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -45,7 +50,11 @@ fun ImageSearchScreen(navController: NavController, imageViewModel: ImageViewMod
     }
 
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(
+            start = 12.dp,
+            end = 12.dp,
+            top = 12.dp
+        )
     ) {
         TextField(
             value = imageSearch,
@@ -58,48 +67,62 @@ fun ImageSearchScreen(navController: NavController, imageViewModel: ImageViewMod
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = {
-            if (imageSearch.isNotBlank()) {
-                imageViewModel.searchImages(API_KEY, imageSearch)
-                imageSearch = ""
-            }
-        }
+        Button(
+            onClick = {
+                if (imageSearch.isNotBlank()) {
+                    imageViewModel.searchImages(API_KEY, imageSearch)
+                    imageSearch = ""
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Search")
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth(), thickness = 2.dp
+        )
         ImageList(imageViewModel = imageViewModel)
     }
 }
 
 @Composable
 fun ImageItem(image: Image) {
-    Row(
+    Card(
         modifier = Modifier
-            .padding(6.dp)
-            .fillMaxWidth()
-    ) {
-
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(image.imageThumbnail)
-                .crossfade(true)
-                .build(),
-            contentDescription = "image_thumbnail",
-            placeholder = painterResource(id = R.drawable.image_icon),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(64.dp)
+            .padding(vertical = 3.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Column (modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)
-        ){
-            Text(text = image.userName, style = MaterialTheme.typography.bodyMedium)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = image.imageTags, style = MaterialTheme.typography.bodySmall)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxWidth()
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(image.imageThumbnail)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "image_thumbnail",
+                placeholder = painterResource(id = R.drawable.image_icon),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(64.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                Text(text = image.userName, style = MaterialTheme.typography.bodyMedium)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = image.imageTags, style = MaterialTheme.typography.bodySmall)
+            }
         }
     }
 }
@@ -109,7 +132,7 @@ fun ImageList(imageViewModel: ImageViewModel) {
 
     val imageList by imageViewModel.imageList.collectAsState()
 
-    LazyColumn {
+    LazyColumn{
         itemsIndexed(imageList) { _, image ->
             ImageItem(image = image)
         }
