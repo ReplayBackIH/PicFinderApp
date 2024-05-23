@@ -1,6 +1,7 @@
 package com.example.picfinder.view.screens
 
-import android.util.Log
+import android.app.AlertDialog
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,14 +13,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,18 +33,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType.Companion.Uri
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.picfinder.R
 import com.example.picfinder.model.data.Image
+import com.example.picfinder.view.navigation.ScreenRoutes
 import com.example.picfinder.viewmodel.ImageViewModel
+import com.google.gson.Gson
 
 const val API_KEY = "44004236-795eb4ba924519db97a8aafe5"
 
 @Composable
-fun ImageSearchScreen(navController: NavController, imageViewModel: ImageViewModel) {
+fun SearchScreen(navController: NavController, imageViewModel: ImageViewModel) {
 
     var imageSearch by remember {
         mutableStateOf("")
@@ -83,17 +87,39 @@ fun ImageSearchScreen(navController: NavController, imageViewModel: ImageViewMod
             modifier = Modifier
                 .fillMaxWidth(), thickness = 2.dp
         )
-        ImageList(imageViewModel = imageViewModel)
+        ImageList(imageViewModel = imageViewModel,navController)
     }
 }
 
 @Composable
-fun ImageItem(image: Image) {
+fun ImageItem(image: Image, navController: NavController) {
+
+    var alertDialogState by remember {
+        mutableStateOf(false)
+    }
+
+    when {
+        alertDialogState -> {
+            ShowAlertDialog(
+                onDismissRequest = { alertDialogState = false },
+                onConfirmRequest = {
+                    alertDialogState = false
+                    navController.navigate(
+                        ScreenRoutes.DetailedImageScreen.route
+                                + "/${image.imageId}"
+                    )
+                },
+                alertDialogTitle = "Do you want to see more details?"
+            )
+        }
+    }
+
     Card(
         modifier = Modifier
-            .padding(vertical = 3.dp),
+            .padding(vertical = 3.dp)
+            .clickable { alertDialogState = true },
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 4.dp,
         )
     ) {
         Row(
@@ -128,14 +154,38 @@ fun ImageItem(image: Image) {
 }
 
 @Composable
-fun ImageList(imageViewModel: ImageViewModel) {
+fun ImageList(imageViewModel: ImageViewModel,navController: NavController) {
 
     val imageList by imageViewModel.imageList.collectAsState()
 
-    LazyColumn{
+    LazyColumn {
         itemsIndexed(imageList) { _, image ->
-            ImageItem(image = image)
+            ImageItem(image = image,navController)
         }
     }
+}
 
+@Composable
+fun ShowAlertDialog(
+    onDismissRequest: () -> Unit,
+    onConfirmRequest: () -> Unit,
+    alertDialogTitle: String,
+) {
+
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        confirmButton = {
+            TextButton(onClick = { onConfirmRequest() }) {
+                Text(text = "Yes")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onDismissRequest() }) {
+                Text(text = "Cancel")
+            }
+        },
+        title = {
+            Text(text = alertDialogTitle)
+        }
+    )
 }

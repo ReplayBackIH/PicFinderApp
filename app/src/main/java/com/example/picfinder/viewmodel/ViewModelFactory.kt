@@ -3,6 +3,7 @@ package com.example.picfinder.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.picfinder.model.data.ImageRepository
+import com.example.picfinder.model.data.database.AppDatabase
 
 class ViewModelFactory(private val imageRepository: ImageRepository) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
