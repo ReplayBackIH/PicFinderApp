@@ -1,37 +1,52 @@
 package com.example.picfinder.view.screens
 
-import androidx.compose.foundation.layout.Arrangement
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.picfinder.view.navigation.ScreenRoutes
+import coil.compose.AsyncImage
+import com.example.picfinder.viewmodel.ImageViewModel
 
 @Composable
-fun DetailedImageScreen(navController: NavController) {
+fun DetailedImageScreen(
+    imageId: Int,
+    navController: NavController,
+    imageViewModel: ImageViewModel
+) {
+
+    val image by imageViewModel.getImageById(imageId = imageId).collectAsState(initial = null)
+
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier.padding(12.dp)
     ) {
-        Text(text = "Detailed Screen")
-        Spacer(modifier = Modifier.height(30.dp))
-        Button(onClick = {
-            navController.navigate(ScreenRoutes.MainScreen.route) {
-                popUpTo(ScreenRoutes.MainScreen.route) {
-                    inclusive = true
-                }
-            }
-        }
-        ) {
-            Text(text = "Go Back")
-        }
+        AsyncImage(
+            model = image?.largeImage,
+            contentDescription = "large_image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp),
+            contentScale = ContentScale.Crop
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "User : ${image?.userName}")
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Tags: ${image?.imageTags}")
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Likes: ${image?.likes}")
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Downloads: ${image?.numberOfDownloads}")
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Comments: ${image?.numberOfComments}")
     }
 }
